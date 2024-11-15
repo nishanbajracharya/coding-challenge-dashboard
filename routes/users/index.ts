@@ -32,17 +32,42 @@ router.post('/login', async (req: TypedRequestBody<{
 });
 
 router.get('/me', auth, async (req, res) => {
-    const { data, error } = await supabase.auth.getUser(res.locals.token);
+    let userResponse = await supabase.auth.getUser(res.locals.token);
 
-    if (error) {
-        res.status(error.status || 400).json({
-            message: error.message
+    if (userResponse.error) {
+        res.status(userResponse.error.status || 400).json({
+            message: userResponse.error.message
         });
 
         return;
     }
 
-    res.json(data);
+    const user = {
+        id: userResponse.data.user.id,
+        email: userResponse.data.user.email,
+        username: '',
+        fullName: '',
+    }
+
+    let profileResponse = await supabase
+        .from('profiles')
+        .select("*")
+        .eq('id', user.id);
+
+    if (profileResponse.error) {
+        res.status(400).json({
+            message: profileResponse.error.message
+        });
+
+        return;
+    }
+
+    const profile = profileResponse.data[0];
+
+    user.username = profile.username;
+    user.fullName = profile.full_name;
+
+    res.json(user);
 });
 
 export default router;

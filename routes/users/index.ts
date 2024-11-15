@@ -27,10 +27,7 @@ router.post('/login', async (req: TypedRequestBody<{
         return;
     }
 
-    res.status(200).json({
-        session: data.session,
-        user: data.user
-    });
+    res.status(200).json(data.session);
 });
 
 export default router;

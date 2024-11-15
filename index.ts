@@ -1,9 +1,14 @@
+import cors from 'cors';
+import helmet from 'helmet';
 import express from 'express';
 import { engine } from 'express-handlebars';
 
 import router from './routes';
 
 const app = express();
+
+app.use(cors());
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

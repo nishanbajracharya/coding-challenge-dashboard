@@ -1,13 +1,14 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 
+import { TypedRequestBody } from '../../types';
 import { supabase } from '../../modules/supabase';
 
 const router = Router();
 
-router.post<{}, {}, {
+router.post('/login', async (req: TypedRequestBody<{
     email: string;
     password: string;
-}>('/login', async (req, res) => {
+}>, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
 

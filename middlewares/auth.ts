@@ -26,9 +26,9 @@ export function auth(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        jwt.verify(token, JWT_SECRET);
 
-        res.locals.auth = decoded;
+        res.locals.token = token;
 
         next();
     } catch (e) {

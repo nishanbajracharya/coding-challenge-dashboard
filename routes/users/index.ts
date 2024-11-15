@@ -32,7 +32,17 @@ router.post('/login', async (req: TypedRequestBody<{
 });
 
 router.get('/me', auth, async (req, res) => {
-    res.json(res.locals.auth);
+    const { data, error } = await supabase.auth.getUser(res.locals.token);
+
+    if (error) {
+        res.status(error.status || 400).json({
+            message: error.message
+        });
+
+        return;
+    }
+
+    res.json(data);
 });
 
 export default router;

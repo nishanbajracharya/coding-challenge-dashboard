@@ -1,8 +1,11 @@
 import express from 'express';
+import { engine } from 'express-handlebars';
 
 const app = express();
 
-const port = process.env.PORT;
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 
 app.get('/api', (req, res) => {
     res.json({
@@ -11,8 +14,11 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.render('home');
 });
+
+
+const port = process.env.PORT;
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

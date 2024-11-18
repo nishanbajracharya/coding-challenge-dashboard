@@ -1,5 +1,6 @@
 import cors from 'cors';
 import helmet from 'helmet';
+import morgan from 'morgan';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
@@ -8,6 +9,8 @@ import router from './routes';
 import { viewAuth } from './middlewares/auth';
 
 const app = express();
+
+app.use(morgan('tiny'));
 
 app.use(cookieParser());
 

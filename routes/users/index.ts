@@ -22,6 +22,8 @@ router.post<
     password,
   });
 
+  console.log('email', email);
+
   if (error) {
     res.status(401).json(
       buildResponse([

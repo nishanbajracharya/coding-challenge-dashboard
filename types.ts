@@ -19,6 +19,7 @@ export type APILinks = {
   next?: APILink;
   prev?: APILink;
   last?: APILink;
+  [action: string]: APILink | undefined;
 };
 
 export type APIMetaData = {

@@ -28,6 +28,23 @@ export function auth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+export function loginRedirect(req: Request, res: Response, next: NextFunction) {
+  const authCookie = req.cookies.token;
+
+  if (!authCookie) {
+    next();
+    return;
+  }
+
+  try {
+    jwt.verify(authCookie, JWT_SECRET);
+
+    res.redirect('/');
+  } catch (e) {
+    next();
+  }
+}
+
 export function viewAuth(req: Request, res: Response, next: NextFunction) {
   const authCookie = req.cookies.token;
 

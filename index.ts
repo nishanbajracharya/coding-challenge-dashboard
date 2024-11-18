@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
 
 import router from './routes';
-import { viewAuth } from './middlewares/auth';
+import { loginRedirect, viewAuth } from './middlewares/auth';
 
 const app = express();
 
@@ -42,7 +42,7 @@ app.get('/', viewAuth, (req, res) => {
   res.render('home');
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', loginRedirect, (req, res) => {
   res.render('login');
 });
 

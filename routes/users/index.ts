@@ -22,8 +22,6 @@ router.post<
     password,
   });
 
-  console.log('email', email);
-
   if (error) {
     res.status(401).json(
       buildResponse([
@@ -66,6 +64,12 @@ router.post<
         }
       )
     );
+});
+
+router.post('/logout', auth, (req, res) => {
+  res.clearCookie('token').json(buildResponse(null, {
+    status: 'Logged out'
+  }));
 });
 
 router.get('/me', auth, async (req, res) => {

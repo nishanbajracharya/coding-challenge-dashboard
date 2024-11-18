@@ -6,19 +6,13 @@ loginForm.addEventListener('submit', async (e) => {
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
 
-  const response = await fetch('/api/users/login', {
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-    method: 'POST',
-  });
-
-  if (response.status !== 200) {
-    // throw error
-    console.log(await response.json());
-  } else {
+  try {
+    await axios.post('/api/users/login', {
+      email, password
+    });
     // Redirect to home
     window.location = '/';
+  } catch (e) {
+    console.log(e);
   }
 });

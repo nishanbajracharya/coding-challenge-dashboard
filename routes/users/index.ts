@@ -35,28 +35,35 @@ router.post<
     return;
   }
 
-  res.status(200).json(
-    buildResponse(
-      null,
-      {
-        accessToken: data.session.access_token,
-        type: data.session.token_type,
-        refreshToken: data.session.refresh_token,
-        expiresIn: data.session.expires_in,
-        expiresAt: data.session.expires_at,
-      },
-      {
-        _links: {
-          self: {
-            href: '/api/users/login',
-          },
-          profile: {
-            href: '/api/users/me'
-          }
+  res
+    .cookie('token', data.session.access_token, {
+      httpOnly: true,
+      maxAge: data.session.expires_in * 1000,
+      secure: true,
+    })
+    .status(200)
+    .json(
+      buildResponse(
+        null,
+        {
+          accessToken: data.session.access_token,
+          type: data.session.token_type,
+          refreshToken: data.session.refresh_token,
+          expiresIn: data.session.expires_in,
+          expiresAt: data.session.expires_at,
         },
-      }
-    )
-  );
+        {
+          _links: {
+            self: {
+              href: '/api/users/login',
+            },
+            profile: {
+              href: '/api/users/me',
+            },
+          },
+        }
+      )
+    );
 });
 
 router.get('/me', auth, async (req, res) => {

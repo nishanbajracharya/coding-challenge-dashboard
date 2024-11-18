@@ -1,14 +1,14 @@
-import {Router} from 'express';
+import { Router } from 'express';
 
 import userRoutes from './users';
 
 const router = Router();
 
 router.get('/', (_, res) => {
-    res.json({
-        name: 'api',
-        status: 'success'
-    });
+  res.json({
+    name: 'api',
+    status: 'success',
+  });
 });
 
 router.use('/users', userRoutes);

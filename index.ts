@@ -20,11 +20,11 @@ app.set('views', './views');
 app.use('/api', router);
 
 app.get('/', (req, res) => {
-    res.render('home');
+  res.render('home');
 });
 
 const port = process.env.PORT;
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });

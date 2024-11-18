@@ -16,7 +16,16 @@ app.use(morgan('tiny'));
 app.use(cookieParser());
 
 app.use(cors());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'script-src': ["'self'", 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net'],
+      },
+    },
+  }),
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

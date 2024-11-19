@@ -66,7 +66,86 @@ router.post<
     );
 });
 
-router.post('/logout', auth, (req, res) => {
+router.post<
+  {},
+  {},
+  {
+    email: string;
+    password: string;
+    passcode: string;
+  }
+>('/signup', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const passcode = req.body.passcode;
+
+  if (passcode !== 'davinci') {
+    res.status(400).json(buildResponse([{
+      message: 'Bad passcode'
+    }]));
+
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    res.status(400).json(buildResponse([error]));
+    return;
+  }
+
+  if (data.session) {
+    res
+      .cookie('token', data.session.access_token, {
+        httpOnly: true,
+        maxAge: data.session.expires_in * 1000,
+        secure: true,
+      })
+      .status(200)
+      .json(
+        buildResponse(
+          null,
+          {
+            accessToken: data.session.access_token,
+            type: data.session.token_type,
+            refreshToken: data.session.refresh_token,
+            expiresIn: data.session.expires_in,
+            expiresAt: data.session.expires_at,
+          },
+          {
+            _links: {
+              self: {
+                href: '/api/users/login',
+              },
+              profile: {
+                href: '/api/users/me',
+              },
+            },
+          }
+        )
+      );
+  } else {
+    res.status(200).json(buildResponse(null, {
+      status: 'account_created',
+      redirect: '/login'
+    }, {
+      _links: {
+        self: {
+          href: '/api/users/login',
+        },
+        profile: {
+          href: '/api/users/me',
+        },
+      },
+    }));
+  }
+});
+
+router.post('/logout', auth, async (req, res) => {
+  await supabase.auth.signOut();
   res.clearCookie('token').json(buildResponse(null, {
     status: 'Logged out'
   }));

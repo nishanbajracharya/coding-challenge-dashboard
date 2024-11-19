@@ -328,9 +328,13 @@ router.patch<
   }
 
   if (!data || data.length === 0) {
-    res.status(400).json(buildResponse([{
-      message: 'Unexpected error'
-    }]));
+    res.status(400).json(
+      buildResponse([
+        {
+          message: 'Unexpected error',
+        },
+      ])
+    );
 
     return;
   }

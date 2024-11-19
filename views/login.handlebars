@@ -1,23 +1,25 @@
-<main class="container">
-    <h1>Login</h1>
+<div class="container">
+    <main class="content">
+        <h1>Login</h1>
 
-    <form id="login-form">
-        <div>
-            <label for="login-email">Email</label>
-            <input id="login-email" type="text"/>
-        </div>
-        <div>
-            <label for="login-password">Password</label>
-            <input id="login-password" type="password"/>
-        </div>
-        <div>
-            <button id="login-btn" type="submit">Login</button>
-        </div>
-        <div id="login-error" class="login-error hide">
-            <p>Login Failed</p>
-        </div>
-    </form>
+        <form id="login-form">
+            <div class="block">
+                <label for="login-email">Email</label>
+                <input class="input is-primary" id="login-email" type="text"/>
+            </div>
+            <div class="block">
+                <label for="login-password">Password</label>
+                <input class="input is-primary" id="login-password" type="password"/>
+            </div>
+            <div class="block">
+                <button id="login-btn" class="button is-primary" type="submit">Login</button>
+            </div>
+            <div id="login-error" class="block has-text-danger is-hidden">
+                <p>Login Failed</p>
+            </div>
+        </form>
 
-</main>
+    </main>
+</div>
 
 <script src="/scripts/login.js" type="application/javascript"></script>

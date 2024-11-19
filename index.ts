@@ -24,7 +24,7 @@ app.use(
         'script-src': ["'self'", 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net'],
       },
     },
-  }),
+  })
 );
 
 app.use(bodyParser.json());

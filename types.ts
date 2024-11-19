@@ -12,7 +12,15 @@ export type APIError = {
 
 export type APILink = {
   href: string;
-  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'OPTIONS' | 'DELETE' | 'HEAD' | 'TRACE';
+  method?:
+    | 'GET'
+    | 'POST'
+    | 'PATCH'
+    | 'PUT'
+    | 'OPTIONS'
+    | 'DELETE'
+    | 'HEAD'
+    | 'TRACE';
 };
 
 export type APILinks = {
@@ -38,4 +46,4 @@ export type Profile = {
   email: string;
   username?: string;
   fullName?: string;
-}
+};

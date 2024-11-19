@@ -57,11 +57,11 @@ router.post<
           _links: {
             self: {
               href: '/api/users/login',
-              method: 'POST'
+              method: 'POST',
             },
             profile: {
               href: '/api/users/me',
-              method: 'GET'
+              method: 'GET',
             },
           },
         }
@@ -83,9 +83,13 @@ router.post<
   const passcode = req.body.passcode;
 
   if (passcode !== 'davinci') {
-    res.status(400).json(buildResponse([{
-      message: 'Bad passcode'
-    }]));
+    res.status(400).json(
+      buildResponse([
+        {
+          message: 'Bad passcode',
+        },
+      ])
+    );
 
     return;
   }
@@ -122,49 +126,61 @@ router.post<
             _links: {
               self: {
                 href: '/api/users/login',
-                method: 'POST'
+                method: 'POST',
               },
               profile: {
                 href: '/api/users/me',
-                method: 'GET'
+                method: 'GET',
               },
             },
           }
         )
       );
   } else {
-    res.status(200).json(buildResponse(null, {
-      status: 'account_created',
-      redirect: '/login'
-    }, {
-      _links: {
-        self: {
-          href: '/api/users/login',
-          method: 'POST'
+    res.status(200).json(
+      buildResponse(
+        null,
+        {
+          status: 'account_created',
+          redirect: '/login',
         },
-        profile: {
-          href: '/api/users/me',
-          method: 'GET'
-        },
-      },
-    }));
+        {
+          _links: {
+            self: {
+              href: '/api/users/login',
+              method: 'POST',
+            },
+            profile: {
+              href: '/api/users/me',
+              method: 'GET',
+            },
+          },
+        }
+      )
+    );
   }
 });
 
 router.post('/logout', auth, async (req, res) => {
   await supabase.auth.signOut();
-  res.clearCookie('token').json(buildResponse(null, {
-    status: 'Logged out'
-  }));
+  res.clearCookie('token').json(
+    buildResponse(null, {
+      status: 'Logged out',
+    })
+  );
 });
 
 router.get('/me', auth, async (req, res) => {
   let userResponse = await supabase.auth.getUser(res.locals.token);
 
   if (userResponse.error) {
-    res.status(userResponse.error.status || 400).json({
-      message: userResponse.error.message,
-    });
+    res.status(userResponse.error.status || 400).json(
+      buildResponse([
+        {
+          message: userResponse.error.message,
+        },
+      ])
+    );
 
     return;
   }
@@ -198,18 +214,23 @@ router.get('/me', auth, async (req, res) => {
   user.username = profile.username;
   user.fullName = profile.full_name;
 
-  res.json(buildResponse(null, user, {
-    _links: {
-      self: {
-        href: '/api/users/me',
-        method: 'GET'
-      }
-    }
-  }));
+  res.json(
+    buildResponse(null, user, {
+      _links: {
+        self: {
+          href: '/api/users/me',
+          method: 'GET',
+        },
+      },
+    })
+  );
 });
 
 router.get('/:id', auth, async (req, res) => {
-  const { data, error } = await supabase.from('profiles').select('*').eq('id', req.params.id);
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', req.params.id);
 
   if (error) {
     res.status(404).json(
@@ -230,14 +251,46 @@ router.get('/:id', auth, async (req, res) => {
     fullName: data[0].full_name,
   };
 
-  res.json(buildResponse(null, profile, {
-    _links: {
-      self: {
-        href: `/api/users/${profile.id}`,
-        method: 'GET'
-      }
-    }
-  }));
+  res.json(
+    buildResponse(null, profile, {
+      _links: {
+        self: {
+          href: `/api/users/${profile.id}`,
+          method: 'GET',
+        },
+      },
+    })
+  );
+});
+
+router.patch('/:id', auth, async (req, res) => {
+  let userResponse = await supabase.auth.getUser(res.locals.token);
+
+  if (userResponse.error) {
+    res.status(userResponse.error.status || 400).json(
+      buildResponse([
+        {
+          message: userResponse.error.message,
+        },
+      ])
+    );
+
+    return;
+  }
+
+  const user = userResponse.data.user;
+
+  if (req.params.id !== user.id) {
+    res.status(400).json(
+      buildResponse([
+        {
+          message: 'User ID mismatch',
+        },
+      ])
+    );
+
+    return;
+  }
 });
 
 export default router;

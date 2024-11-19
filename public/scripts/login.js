@@ -19,7 +19,7 @@ loginForm.addEventListener('submit', async (e) => {
     window.location.href = '/';
   } catch (e) {
     loginError.classList.remove('is-hidden');
-    
+
     if (e.message) {
       loginError.innerText = e.message;
     }

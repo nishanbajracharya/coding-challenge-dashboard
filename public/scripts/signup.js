@@ -20,7 +20,7 @@ signupForm.addEventListener('submit', async (e) => {
     window.location.href = '/';
   } catch (e) {
     signupError.classList.remove('is-hidden');
-    
+
     if (e.message) {
       signupError.innerText = e.message;
     }

@@ -46,6 +46,10 @@ app.get('/login', loginRedirect, (req, res) => {
   res.render('login');
 });
 
+app.get('/signup', loginRedirect, (req, res) => {
+  res.render('signup');
+});
+
 const port = process.env.PORT;
 
 app.listen(port, () => {

@@ -19,7 +19,9 @@ async function updateProfileModal() {
 
     const fullName = response.data.data.fullName;
     const username = response.data.data.username;
+    const id = response.data.data.id;
 
+    document.getElementById('update-id').value = id;
     document.getElementById('update-username').value = username;
     document.getElementById('update-fullname').value = fullName;
   } catch (e) {
@@ -65,8 +67,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add a keyboard event to close all modals
   document.addEventListener('keydown', (event) => {
-    if(event.key === "Escape") {
+    if (event.key === "Escape") {
       closeAllModals();
     }
   });
+
+  document.getElementById('update-profile-form').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const id = document.getElementById('update-id').value;
+    const username = document.getElementById('update-username').value;
+    const fullName = document.getElementById('update-fullname').value;
+    const updateBtn = document.getElementById('update-profile-submit-btn');
+
+    const responseEl = document.getElementById('update-profile-status');
+    responseEl.classList.innerText = '';
+    responseEl.classList.remove('has-text-danger');
+    responseEl.classList.remove('has-text-success');
+    responseEl.classList.add('is-hidden');
+    updateBtn.classList.add('is-loading');
+
+    try {
+      await axios.patch(`/api/users/${id}`, {
+        username,
+        fullName
+      });
+
+      responseEl.innerText = 'Successfully updated profile';
+      responseEl.classList.add('has-text-success');
+    } catch (e) {
+      responseEl.innerText = 'Failed to update profile';
+      responseEl.classList.add('has-text-danger');
+    } finally {
+      responseEl.classList.remove('is-hidden');
+      updateBtn.classList.remove('is-loading');
+    }
+  })
 });

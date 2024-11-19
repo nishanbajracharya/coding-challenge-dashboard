@@ -4,7 +4,7 @@
     <div class='is-flex is-justify-content-flex-end'>
       <button
         id='update-profile-btn'
-        class='js-modal-trigger button is-info is-outlined'
+        class='js-modal-trigger button is-info is-outlined mr-4'
         target='update-profile-modal'
       >Update Profile</button>
 
@@ -21,9 +21,13 @@
 
   <div class='modal-content'>
     <div class='box'>
-      <p>Update Profile</p>
+      <p class="block title is-4">Update Profile</p>
       <!-- Your content -->
       <form id="update-profile-form">
+        <div class='block is-hidden'>
+          <label for='update-id'>ID</label>
+          <input class='input' id='update-id' type='text' disabled />
+        </div>
         <div class='block'>
           <label for='update-username'>Username</label>
           <input class='input' id='update-username' type='text' />
@@ -34,10 +38,16 @@
         </div>
         <div class='block has-text-centered'>
           <button
-            id='login-btn'
+            id='update-profile-submit-btn'
             class='button is-primary'
             type='submit'
           >Update Profile</button>
+        </div>
+        <div
+          id='update-profile-status'
+          class='block has-text-centered is-hidden'
+        >
+          <p></p>
         </div>
       </form>
     </div>

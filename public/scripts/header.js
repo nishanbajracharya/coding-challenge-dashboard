@@ -13,6 +13,20 @@ logoutBtn.addEventListener('click', async () => {
   }
 });
 
+async function updateProfileModal() {
+  try {
+    const response = await axios.get(`/api/users/me`);
+
+    const fullName = response.data.data.fullName;
+    const username = response.data.data.username;
+
+    document.getElementById('update-username').value = username;
+    document.getElementById('update-fullname').value = fullName;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Functions to open and close a modal
   function openModal($el) {
@@ -31,10 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add a click event on buttons to open a specific modal
   (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-    const modal = $trigger.dataset.target;
+    const modal = $trigger.getAttribute('target');
     const $target = document.getElementById(modal);
 
     $trigger.addEventListener('click', () => {
+      if (modal === 'update-profile-modal') updateProfileModal();
       openModal($target);
     });
   });

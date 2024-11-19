@@ -57,9 +57,11 @@ router.post<
           _links: {
             self: {
               href: '/api/users/login',
+              method: 'POST'
             },
             profile: {
               href: '/api/users/me',
+              method: 'GET'
             },
           },
         }
@@ -120,9 +122,11 @@ router.post<
             _links: {
               self: {
                 href: '/api/users/login',
+                method: 'POST'
               },
               profile: {
                 href: '/api/users/me',
+                method: 'GET'
               },
             },
           }
@@ -136,9 +140,11 @@ router.post<
       _links: {
         self: {
           href: '/api/users/login',
+          method: 'POST'
         },
         profile: {
           href: '/api/users/me',
+          method: 'GET'
         },
       },
     }));
@@ -192,7 +198,14 @@ router.get('/me', auth, async (req, res) => {
   user.username = profile.username;
   user.fullName = profile.full_name;
 
-  res.json(buildResponse(null, user));
+  res.json(buildResponse(null, user, {
+    _links: {
+      self: {
+        href: '/api/users/me',
+        method: 'GET'
+      }
+    }
+  }));
 });
 
 router.get('/:id', auth, async (req, res) => {
@@ -217,7 +230,14 @@ router.get('/:id', auth, async (req, res) => {
     fullName: data[0].full_name,
   };
 
-  res.json(buildResponse(null, profile));
+  res.json(buildResponse(null, profile, {
+    _links: {
+      self: {
+        href: `/api/users/${profile.id}`,
+        method: 'GET'
+      }
+    }
+  }));
 });
 
 export default router;

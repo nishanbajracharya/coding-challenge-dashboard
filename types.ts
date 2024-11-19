@@ -12,6 +12,7 @@ export type APIError = {
 
 export type APILink = {
   href: string;
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'OPTIONS' | 'DELETE' | 'HEAD' | 'TRACE';
 };
 
 export type APILinks = {

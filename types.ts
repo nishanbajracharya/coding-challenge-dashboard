@@ -31,3 +31,10 @@ export type APIResponse = {
   data?: unknown;
   errors?: APIError[];
 };
+
+export type Profile = {
+  id: string;
+  email: string;
+  username?: string;
+  fullName?: string;
+}

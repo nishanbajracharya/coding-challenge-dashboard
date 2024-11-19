@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { auth } from '../../middlewares/auth';
 import { supabase } from '../../modules/supabase';
 import { buildResponse } from '../../modules/responseBuilder';
+import { Profile } from '../../types';
 
 const router = Router();
 
@@ -192,6 +193,31 @@ router.get('/me', auth, async (req, res) => {
   user.fullName = profile.full_name;
 
   res.json(buildResponse(null, user));
+});
+
+router.get('/:id', auth, async (req, res) => {
+  const { data, error } = await supabase.from('profiles').select('*').eq('id', req.params.id);
+
+  if (error) {
+    res.status(404).json(
+      buildResponse([
+        {
+          message: error.message,
+        },
+      ])
+    );
+
+    return;
+  }
+
+  const profile: Profile = {
+    id: data[0].id,
+    email: data[0].email,
+    username: data[0].username,
+    fullName: data[0].full_name,
+  };
+
+  res.json(buildResponse(null, profile));
 });
 
 export default router;

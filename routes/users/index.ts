@@ -263,7 +263,16 @@ router.get('/:id', auth, async (req, res) => {
   );
 });
 
-router.patch('/:id', auth, async (req, res) => {
+router.patch<
+  {
+    id: string;
+  },
+  {},
+  {
+    username: string;
+    fullName: string;
+  }
+>('/:id', auth, async (req, res) => {
   let userResponse = await supabase.auth.getUser(res.locals.token);
 
   if (userResponse.error) {
@@ -291,6 +300,62 @@ router.patch('/:id', auth, async (req, res) => {
 
     return;
   }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(
+      {
+        username: req.body.username,
+        full_name: req.body.fullName,
+      },
+      {
+        count: 'exact',
+      }
+    )
+    .eq('id', req.params.id)
+    .select('*');
+
+  if (error) {
+    res.status(400).json(
+      buildResponse([
+        {
+          message: error.message,
+        },
+      ])
+    );
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    res.status(400).json(buildResponse([{
+      message: 'Unexpected error'
+    }]));
+
+    return;
+  }
+
+  const profile: Profile = {
+    id: data[0].id,
+    email: data[0].email,
+    username: data[0].username,
+    fullName: data[0].full_name,
+  };
+
+  res.json(
+    buildResponse(null, profile, {
+      _links: {
+        self: {
+          href: `/api/users/${req.params.id}`,
+          method: 'PATCH',
+        },
+        profile: {
+          href: `/api/users/${req.params.id}`,
+          method: 'GET',
+        },
+      },
+    })
+  );
 });
 
 export default router;

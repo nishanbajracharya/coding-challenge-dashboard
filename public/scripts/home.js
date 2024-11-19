@@ -4,7 +4,7 @@ logoutBtn.addEventListener('click', async () => {
     try {
         await axios.post('/api/users/logout');
 
-        window.location = '/login';
+        window.location.href = '/login';
     } catch(e) {
         console.log(e);
     }

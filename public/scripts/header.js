@@ -57,7 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Add a click event on various child elements to close the parent modal
-  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+  (
+    document.querySelectorAll(
+      '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button'
+    ) || []
+  ).forEach(($close) => {
     const $target = $close.closest('.modal');
 
     $close.addEventListener('click', () => {
@@ -67,40 +71,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add a keyboard event to close all modals
   document.addEventListener('keydown', (event) => {
-    if (event.key === "Escape") {
+    if (event.key === 'Escape') {
       closeAllModals();
     }
   });
 
-  document.getElementById('update-profile-form').addEventListener('submit', async e => {
-    e.preventDefault();
+  document
+    .getElementById('update-profile-form')
+    .addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const id = document.getElementById('update-id').value;
-    const username = document.getElementById('update-username').value;
-    const fullName = document.getElementById('update-fullname').value;
-    const updateBtn = document.getElementById('update-profile-submit-btn');
+      const id = document.getElementById('update-id').value;
+      const username = document.getElementById('update-username').value;
+      const fullName = document.getElementById('update-fullname').value;
+      const updateBtn = document.getElementById('update-profile-submit-btn');
 
-    const responseEl = document.getElementById('update-profile-status');
-    responseEl.classList.innerText = '';
-    responseEl.classList.remove('has-text-danger');
-    responseEl.classList.remove('has-text-success');
-    responseEl.classList.add('is-hidden');
-    updateBtn.classList.add('is-loading');
+      const responseEl = document.getElementById('update-profile-status');
+      responseEl.classList.innerText = '';
+      responseEl.classList.remove('has-text-danger');
+      responseEl.classList.remove('has-text-success');
+      responseEl.classList.add('is-hidden');
+      updateBtn.classList.add('is-loading');
 
-    try {
-      await axios.patch(`/api/users/${id}`, {
-        username,
-        fullName
-      });
+      try {
+        await axios.patch(`/api/users/${id}`, {
+          username,
+          fullName,
+        });
 
-      responseEl.innerText = 'Successfully updated profile';
-      responseEl.classList.add('has-text-success');
-    } catch (e) {
-      responseEl.innerText = 'Failed to update profile';
-      responseEl.classList.add('has-text-danger');
-    } finally {
-      responseEl.classList.remove('is-hidden');
-      updateBtn.classList.remove('is-loading');
-    }
-  })
+        responseEl.innerText = 'Successfully updated profile';
+        responseEl.classList.add('has-text-success');
+      } catch (e) {
+        responseEl.innerText = 'Failed to update profile';
+        responseEl.classList.add('has-text-danger');
+      } finally {
+        responseEl.classList.remove('is-hidden');
+        updateBtn.classList.remove('is-loading');
+      }
+    });
 });

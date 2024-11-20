@@ -14,7 +14,9 @@ signupForm.addEventListener('submit', async (e) => {
 
   try {
     await axios.post('/api/users/signup', {
-      email, password, passcode
+      email,
+      password,
+      passcode,
     });
     // Redirect to home
     window.location.href = '/';

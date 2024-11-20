@@ -13,7 +13,8 @@ loginForm.addEventListener('submit', async (e) => {
 
   try {
     await axios.post('/api/users/login', {
-      email, password
+      email,
+      password,
     });
     // Redirect to home
     window.location.href = '/';

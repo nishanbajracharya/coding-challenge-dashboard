@@ -3,7 +3,7 @@ const logoutBtn = document.getElementById('logout-btn');
 logoutBtn.addEventListener('click', async () => {
   try {
     logoutBtn.classList.add('is-loading');
-    await axios.post('/api/users/logout');
+    await window.axios.post('/api/users/logout');
 
     window.location.href = '/login';
   } catch (e) {
@@ -15,7 +15,7 @@ logoutBtn.addEventListener('click', async () => {
 
 async function updateProfileModal() {
   try {
-    const response = await axios.get(`/api/users/me`);
+    const response = await window.axios.get(`/api/users/me`);
 
     const fullName = response.data.data.fullName;
     const username = response.data.data.username;
@@ -94,14 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
       updateBtn.classList.add('is-loading');
 
       try {
-        await axios.patch(`/api/users/${id}`, {
+        await window.axios.patch(`/api/users/${id}`, {
           username,
           fullName,
         });
 
         responseEl.innerText = 'Successfully updated profile';
         responseEl.classList.add('has-text-success');
-      } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_) {
         responseEl.innerText = 'Failed to update profile';
         responseEl.classList.add('has-text-danger');
       } finally {

@@ -171,7 +171,7 @@ router.post('/logout', auth, async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
-  let userResponse = await supabase.auth.getUser(res.locals.token);
+  const userResponse = await supabase.auth.getUser(res.locals.token);
 
   if (userResponse.error) {
     res.status(userResponse.error.status || 400).json(
@@ -192,7 +192,7 @@ router.get('/me', auth, async (req, res) => {
     fullName: '',
   };
 
-  let profileResponse = await supabase
+  const profileResponse = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id);
@@ -273,7 +273,7 @@ router.patch<
     fullName: string;
   }
 >('/:id', auth, async (req, res) => {
-  let userResponse = await supabase.auth.getUser(res.locals.token);
+  const userResponse = await supabase.auth.getUser(res.locals.token);
 
   if (userResponse.error) {
     res.status(userResponse.error.status || 400).json(

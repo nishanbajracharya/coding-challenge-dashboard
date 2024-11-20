@@ -12,7 +12,7 @@ loginForm.addEventListener('submit', async (e) => {
   loginBtn.classList.add('is-loading');
 
   try {
-    await axios.post('/api/users/login', {
+    await window.axios.post('/api/users/login', {
       email,
       password,
     });

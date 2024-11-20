@@ -13,7 +13,7 @@ signupForm.addEventListener('submit', async (e) => {
   signupBtn.classList.add('is-loading');
 
   try {
-    await axios.post('/api/users/signup', {
+    await window.axios.post('/api/users/signup', {
       email,
       password,
       passcode,
